@@ -1,0 +1,68 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# dependencies
+require "commander/import"
+
+# standard lib
+require "yaml"
+require "fileutils"
+
+# modules
+require_relative "../lib/ansible_utils/dependency_manager"
+require_relative "../lib/ansible_utils/playbook_helpers"
+require_relative "../lib/ansible_utils/version"
+
+include AnsibleUtils::PlaybookHelpers
+
+program :name, "Ansible Utils"
+program :version, AnsibleUtils::VERSION
+program :description, "Utils for managing Ansible projects"
+
+command :copy_roles do |c|
+  c.syntax = "ansible-utils copy_roles <playbook>"
+  c.description = "Copy playbook roles from generic source"
+  c.option "-f", "--force", "Overwrite existing roles"
+  c.action do |args, options|
+    options.default force: false
+    AnsibleUtils::DependencyManager.new(args.first, options).copy_roles
+  end
+end
+
+command :symlink_roles do |c|
+  c.syntax = "ansible-utils symlink_roles <playbook>"
+  c.description = "Symlink playbook roles from generic source"
+  c.option "-f", "--force", "Overwrite existing roles"
+  c.action do |args, options|
+    options.default force: false
+    AnsibleUtils::DependencyManager.new(args.first, options).symlink_roles
+  end
+end
+
+command :config do |c|
+  c.syntax = "ansible-utils config"
+  c.description = "Check configuration"
+  c.action do |args, _|
+    if !File.file?(config_file_path)
+      puts "[!!] Config file at #{config_file_path} doesn't exist. Creating..."
+      puts "[OK] Created file #{config_file_path}. Open it with your editor"
+      FileUtils.mkdir_p(File.join(ENV.fetch('HOME'), '.config', 'ansible-utils'))
+      File.write(config_file_path, "---\ngeneric_roles_path: ")
+    else
+      puts "[OK] Config file found. Checking syntax and content..."
+      folder = generic_roles_folder
+      if folder
+        puts "[OK] Syntax is fine"
+      else
+        puts "[!!] Syntax seems to be wrong, couldn't read value"
+      end
+      if Dir.exists?(folder)
+        puts "[OK] Generic folder exist: #{folder}"
+      else
+        puts "[!!] Generic folder referenced in the file doesn't exist: #{folder}"
+      end
+    end
+  end
+end
+
+
