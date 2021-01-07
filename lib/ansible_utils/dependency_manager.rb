@@ -27,7 +27,7 @@ module AnsibleUtils
       file_utils_method = action == :copy ? :copy_entry : :ln_s
 
       if !File.directory?(populate_ansible_path)
-        puts "- Ignoring role '#{path}' because it does not exist in populate-ansible"
+        puts "- Ignoring role '#{path}' because it does not exist in #{populate_ansible_path}"
       else
         dirname = File.dirname(project_path)
         if Dir.exists?(project_path)
