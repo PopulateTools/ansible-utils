@@ -6,7 +6,7 @@ require 'ansible_utils/version'
 
 Gem::Specification.new do |spec|
   spec.name = "ansible-utils"
-  spec.version = "0.1.0"
+  spec.version = AnsibleUtils::VERSION
   spec.authors = ['Víctor Martín', 'Fernando Blat']
   spec.email   = ['victor@populate.tools', 'fernando@populate.tools']
   spec.summary = "PopulateTools Ansible Utils"
