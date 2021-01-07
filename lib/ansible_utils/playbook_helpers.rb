@@ -10,7 +10,13 @@ module AnsibleUtils
     end
 
     def paths
-      @paths ||= roles.map{|role| role['role'] }
+      @paths ||= roles.map do |role|
+        if role.is_a?(Hash)
+          role['role']
+        else
+          role
+        end
+      end
     end
 
     def roles
