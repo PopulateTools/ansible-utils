@@ -24,7 +24,7 @@ module AnsibleUtils
     end
 
     def project_folder
-      @project_folder ||= File.dirname(playbook_path)
+      @project_folder ||= Dir.pwd
     end
 
     def generic_roles_folder
