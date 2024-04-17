@@ -30,7 +30,7 @@ module AnsibleUtils
         puts "- Ignoring role '#{path}' because it does not exist in #{populate_ansible_path}"
       else
         dirname = File.dirname(project_path)
-        if Dir.exists?(project_path)
+        if Dir.exist?(project_path)
           if options.force
             puts "+ Overwritting role '#{path}'"
             delete_if_exists(project_path)

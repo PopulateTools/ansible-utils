@@ -56,7 +56,7 @@ command :config do |c|
       else
         puts "[!!] Syntax seems to be wrong, couldn't read value"
       end
-      if Dir.exists?(folder)
+      if Dir.exist?(folder)
         puts "[OK] Generic folder exist: #{folder}"
       else
         puts "[!!] Generic folder referenced in the file doesn't exist: #{folder}"
